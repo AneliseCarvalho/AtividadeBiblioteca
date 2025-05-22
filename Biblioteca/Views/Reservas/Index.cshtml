@@ -18,6 +18,26 @@
                     </button>
                 </div>
             </form>
+            @foreach (var reserva in Model)
+            {
+                <tr>
+                    <td>@reserva.Livro?.Titulo</td>
+                    <td>@reserva.DataReserva.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        @if (!reserva.Cancelada)
+                        {
+                            <a asp-action="Cancelar" asp-route-id="@reserva.ReservaId" class="btn btn-danger btn-sm"
+                               onclick="return confirm('Tem certeza que deseja cancelar esta reserva?');">
+                                Cancelar
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Cancelada</span>
+                        }
+                    </td>
+                </tr>
+            }
         </div>
 
         <table class="table table-dark table-striped mt-3">
