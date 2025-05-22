@@ -1,57 +1,62 @@
 ﻿@model Biblioteca.Models.Usuario
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Excluir Usuário";
 }
 
-<h1>Delete</h1>
+<div class="row">
+    <div class="col-1 col-md-2 col-lg-2"></div>
+    <div class="col-10 col-md-8 col-lg-8 bg-black text-light m-lg-5 mb-3 p-5">
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Usuario</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NomeCompleto)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NomeCompleto)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CPF)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CPF)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Celular)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Celular)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DataNascimento)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DataNascimento)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UrlFoto)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UrlFoto)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AppUserId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AppUserId)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="UsuarioId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+        <h1 class="text-center mb-5 text-danger">Excluir Usuário</h1>
+
+        <div class="alert alert-warning text-dark text-center mb-4">
+            <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Tem certeza que deseja excluir este usuário?</h4>
+        </div>
+
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-10">
+                <div class="card bg-dark text-light shadow mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4 d-flex align-items-center justify-content-center p-3">
+                            @if (!string.IsNullOrEmpty(Model.UrlFoto))
+                            {
+                                <img src="@Model.UrlFoto" alt="Foto do Usuário" class="img-thumbnail mb-2" style="width: 120px; height: 120px; object-fit: cover;" />
+                            }
+                            else
+                            {
+                                <span class="text-muted">Sem foto</span>
+                            }
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h4 class="card-title mb-3">@Model.NomeCompleto</h4>
+                                <p class="mb-1"><strong>@Html.DisplayNameFor(m => m.CPF):</strong> @Model.CPF</p>
+                                <p class="mb-1"><strong>@Html.DisplayNameFor(m => m.Celular):</strong> @Model.Celular</p>
+                                <p class="mb-1"><strong>@Html.DisplayNameFor(m => m.DataNascimento):</strong> @Model.DataNascimento</p>
+                                <p class="mb-1"><strong>@Html.DisplayNameFor(m => m.AppUserId):</strong> @Model.AppUserId</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="UsuarioId" />
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash3"></i> Excluir
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-light">
+                            <i class="bi bi-arrow-left"></i> Voltar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-1 col-md-2 col-lg-2"></div>
 </div>

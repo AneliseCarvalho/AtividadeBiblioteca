@@ -3,69 +3,78 @@
     ViewData["Title"] = "Cadastro de Usuário";
 }
 
-<div id="divUsuario" class="container bg-black text-light mt-5 fs-5">
-    <h4 class="text-center fs-3">Confirme seus Dados</h4>
-    <hr />
-    <form asp-action="Edit">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="UsuarioId" />
-        <div class="row gap-3 mb-3 mt-2">
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="NomeCompleto" class="control-label"></label>
-                    <input asp-for="NomeCompleto" class="form-control" />
-                    <span asp-validation-for="NomeCompleto" class="text-danger"></span>
+<div class="row">
+    <div class="col-1 col-md-2 col-lg-2"></div>
+    <div class="col-10 col-md-8 col-lg-8 bg-black text-light m-lg-5 mb-3 p-5">
+
+        <h1 class="text-center mb-5">Editar Usuário</h1>
+
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <input type="hidden" asp-for="UsuarioId" />
+
+            <div class="row mb-3">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label asp-for="NomeCompleto" class="form-label"></label>
+                        <input asp-for="NomeCompleto" class="form-control" />
+                        <span asp-validation-for="NomeCompleto" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <label class="form-label">Foto Atual</label>
+                    <div>
+                        @if (!string.IsNullOrEmpty(Model.UrlFoto))
+                        {
+                            <img src="@Model.UrlFoto" alt="Foto do Usuário" class="img-thumbnail mb-2" style="width: 100px; height: 100px; object-fit: cover;" />
+                        }
+                        else
+                        {
+                            <span class="text-muted">Sem foto</span>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row gap-3 mb-3">
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="CPF" class="control-label"></label>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="CPF" class="form-label"></label>
                     <input asp-for="CPF" class="form-control" />
                     <span asp-validation-for="CPF" class="text-danger"></span>
                 </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="Celular" class="control-label"></label>
+                <div class="col-md-6">
+                    <label asp-for="Celular" class="form-label"></label>
                     <input asp-for="Celular" class="form-control" />
                     <span asp-validation-for="Celular" class="text-danger"></span>
                 </div>
             </div>
-        </div>
-        <div class="row gap-3 mb-3">
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="DataNascimento" class="control-label"></label>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="DataNascimento" class="form-label"></label>
                     <input type="date" asp-for="DataNascimento" class="form-control" />
                     <span asp-validation-for="DataNascimento" class="text-danger"></span>
                 </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="UrlFoto" class="control-label"></label>
+                <div class="col-md-6">
+                    <label asp-for="UrlFoto" class="form-label">Trocar Foto</label>
                     <input type="file" asp-for="UrlFoto" class="form-control" accept="image/*" />
                     <span asp-validation-for="UrlFoto" class="text-danger"></span>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <input type="hidden" asp-for="AppUserId" class="form-control" />
-        </div>
+            <input type="hidden" asp-for="AppUserId" />
 
-        <div class="row gap-3 mb-3">
-            <div class="col">
-                <div class="form-group d-flex justify-content-between pt-4">
-                    <button asp-action="Index" class="btn btn-outline-light fs-5"><i class="bi bi-arrow-clockwise"></i> Voltar</button>
-                    <button type="submit" id="btnSalvar" class="btn btn-light fs-5">
-                        <i class="bi bi-floppy"></i>  Salvar
-                    </button>
-                </div>
+            <div class="d-flex justify-content-between mt-4">
+                <a asp-action="Index" class="btn btn-outline-light fs-5">
+                    <i class="bi bi-arrow-left"></i> Voltar
+                </a>
+                <button type="submit" id="btnSalvar" class="btn btn-success fs-5">
+                    <i class="bi bi-floppy"></i> Salvar
+                </button>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
+    <div class="col-1 col-md-2 col-lg-2"></div>
 </div>
 
 @section Scripts {

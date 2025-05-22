@@ -203,7 +203,7 @@ namespace Biblioteca.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LivroId,Titulo,Autor,Descricao,Editora,DataPublicacao,NumeroPaginas,Quantidade,UrlCapa,ISBN10,ISBN13,GeneroId")] Livro livro)
+        public async Task<IActionResult> Edit(int id, [Bind("LivroId,Titulo,Autor,Descricao,Editora,DataPublicacao,NumeroPaginas,Quantidade,UrlCapa,ISBN10,ISBN13,GeneroId")] Livro livro, IFormFile capaUpload)
         {
             if (id != livro.LivroId)
             {
@@ -214,6 +214,49 @@ namespace Biblioteca.Controllers
             {
                 try
                 {
+                    var livroExistente = await _context.Livros.AsNoTracking().FirstOrDefaultAsync(l => l.LivroId == id);
+                    if (livroExistente == null)
+                        return NotFound();
+
+                    // Se o usuário enviou uma nova imagem de capa
+                    if (capaUpload != null && capaUpload.Length > 0)
+                    {
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Books");
+                        var fileExtension = Path.GetExtension(capaUpload.FileName);
+                        var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        // Criar a pasta se não existir
+                        if (!Directory.Exists(uploadsFolder))
+                        {
+                            Directory.CreateDirectory(uploadsFolder);
+                        }
+
+                        // Remover a imagem antiga, se existir
+                        if (!string.IsNullOrEmpty(livroExistente.UrlCapa))
+                        {
+                            var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), livroExistente.UrlCapa.Replace("/", Path.DirectorySeparatorChar.ToString()));
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                        }
+
+                        // Salvar a nova imagem
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await capaUpload.CopyToAsync(fileStream);
+                        }
+
+                        // Atualizar o campo UrlCapa com o caminho relativo
+                        livro.UrlCapa = Path.Combine("Resources", "Books", uniqueFileName).Replace("\\", "/");
+                    }
+                    else
+                    {
+                        // Se não enviou nova imagem, manter a antiga
+                        livro.UrlCapa = livroExistente.UrlCapa;
+                    }
+
                     _context.Update(livro);
                     await _context.SaveChangesAsync();
                 }
