@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Biblioteca.Models.Genero>
+
+@{
+    ViewData["Title"] = "Gêneros";
+}
+
+<div class="row">
+    <div class="col-1 col-md-2 col-lg-2"></div>
+    <div class="col-10 col-md-8 col-lg-8 bg-black text-light m-lg-5 mb-3 p-5">
+
+        <h1 class="text-center mb-5">Cadastro de Gêneros</h1>
+
+        <div class="mb-4">
+            <a asp-action="Create" class="btn btn-success">Novo Gênero</a>
+        </div>
+
+        <table class="table table-dark table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Nome)</th>
+                    <th style="width: 220px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.GeneroId" class="text-light text-decoration-none me-2">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.GeneroId" class="text-light text-decoration-none me-2">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.GeneroId" class="text-light text-decoration-none me-2">
+                                <i class="bi bi-trash3"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-1 col-md-2 col-lg-2"></div>
+</div>
