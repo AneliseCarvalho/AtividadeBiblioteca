@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Biblioteca.Data;
 using Biblioteca.Models;
+using System.Security.Claims;
 
 namespace Biblioteca.Controllers
 {
@@ -19,11 +20,32 @@ namespace Biblioteca.Controllers
             _context = context;
         }
 
-        // GET: Avaliacoes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Avaliacoes.Include(a => a.Livro).Include(a => a.Usuario);
-            return View(await applicationDbContext.ToListAsync());
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Busca o usuário logado
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.IdentityUser != null && u.IdentityUser.Id == userId);
+
+            if (usuario == null)
+                return Unauthorized();
+
+            //// Busca os livros que o usuário já retirou (todas as movimentações do usuário)
+            //var livrosRetiradosIds = await _context.Movimentacoes
+            //    .Where(m => m.UsuarioId == usuario.UsuarioId)
+            //    .Select(m => m.LivroId)
+            //    .Distinct()
+            //    .ToListAsync();
+
+            // Filtra as avaliações apenas desses livros e do usuário logado
+            var avaliacoes = await _context.Avaliacoes
+                .Include(a => a.Livro)
+                .Include(a => a.Usuario)
+                .Where(a => a.UsuarioId == usuario.UsuarioId)
+                .ToListAsync();
+
+            return View(avaliacoes);
         }
 
         // GET: Avaliacoes/Details/5
@@ -47,7 +69,7 @@ namespace Biblioteca.Controllers
         }
 
         // GET: Avaliacoes/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
             ViewData["LivroId"] = new SelectList(_context.Livros, "LivroId", "LivroId");
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "UsuarioId");

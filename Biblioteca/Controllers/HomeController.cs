@@ -25,7 +25,7 @@ namespace Biblioteca.Controllers
                 .Take(4)
                 .ToListAsync();
 
-            var top5Livros = await _context.Reservas
+            var top5LivrosIds = await _context.Reservas
                 .GroupBy(r => r.LivroId)
                 .OrderByDescending(g => g.Count())
                 .Take(5)
@@ -34,18 +34,27 @@ namespace Biblioteca.Controllers
 
             var livrosMaisReservados = await _context.Livros
                 .Include(l => l.Genero)
-                .Where(l => top5Livros.Contains(l.LivroId))
+                .Where(l => top5LivrosIds.Contains(l.LivroId))
                 .ToListAsync();
 
-            // Ordena conforme o ranking
-            livrosMaisReservados = top5Livros
+            // Ordena conforme o ranking do top5
+            livrosMaisReservados = top5LivrosIds
                 .Select(id => livrosMaisReservados.First(l => l.LivroId == id))
                 .ToList();
 
-            ViewBag.LivrosMaisReservados = livrosMaisReservados;
+            // Avaliações para todos os livros
+            var avaliacoes = await _context.Avaliacoes
+                .GroupBy(a => a.LivroId)
+                .Select(g => new { LivroId = g.Key, Media = g.Average(a => a.Nota), Quantidade = g.Count() })
+                .ToListAsync();
 
-            return View(ultimosLivros);
+            ViewBag.UltimosLivros = ultimosLivros;
+            ViewBag.LivrosMaisReservados = livrosMaisReservados;
+            ViewBag.AvaliacoesLivro = avaliacoes.ToDictionary(a => a.LivroId, a => new { a.Media, a.Quantidade });
+
+            return View();
         }
+
 
         public IActionResult Privacy()
         {
