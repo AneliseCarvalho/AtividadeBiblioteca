@@ -21,11 +21,14 @@
                         <div class="col-md-4 d-flex align-items-center justify-content-center p-3">
                             @if (!string.IsNullOrEmpty(Model.UrlFoto))
                             {
-                                <img src="@Model.UrlFoto" alt="Foto do Usuário" class="img-thumbnail mb-2" style="width: 120px; height: 120px; object-fit: cover;" />
+                                <img src="@Url.Action("BuscarFoto", "Usuarios", new { id = Model.UsuarioId })"
+                                     alt="Foto do Usuário"
+                                     class="img-thumbnail mb-2"
+                                     style="width: 100px; height: 100px; object-fit: cover;" />
                             }
                             else
                             {
-                                <span class="text-muted">Sem foto</span>
+                                <img src="~/img/sem-imagem.jpg" alt="Sem Foto" class="img-thumbnail mb-2" style="width: 100px; height: 100px; object-fit: cover;" />
                             }
                         </div>
                         <div class="col-md-8">

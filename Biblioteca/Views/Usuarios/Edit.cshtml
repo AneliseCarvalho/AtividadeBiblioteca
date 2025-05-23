@@ -9,31 +9,30 @@
 
         <h1 class="text-center mb-5">Editar Usuário</h1>
 
-        <form asp-action="Edit" enctype="multipart/form-data">
+        <form asp-action="Edit" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-            <input type="hidden" asp-for="UsuarioId" />
 
+            <input type="hidden" asp-for="UsuarioId" />
+            @if (!string.IsNullOrEmpty(Model.UrlFoto))
+            {
+                <img src="@Url.Action("BuscarFoto", "Usuarios", new { id = Model.UsuarioId })"
+                     alt="Foto do Usuário"
+                     class="img-thumbnail mb-2"
+                     style="width: 100px; height: 100px; object-fit: cover;" />
+            }
+            else
+            {
+                <img src="~/img/sem-imagem.jpg" alt="Sem Foto" class="img-thumbnail mb-2" style="width: 100px; height: 100px; object-fit: cover;" />
+            }
             <div class="row mb-3">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="mb-3">
                         <label asp-for="NomeCompleto" class="form-label"></label>
                         <input asp-for="NomeCompleto" class="form-control" />
                         <span asp-validation-for="NomeCompleto" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4 text-center">
-                    <label class="form-label">Foto Atual</label>
-                    <div>
-                        @if (!string.IsNullOrEmpty(Model.UrlFoto))
-                        {
-                            <img src="@Model.UrlFoto" alt="Foto do Usuário" class="img-thumbnail mb-2" style="width: 100px; height: 100px; object-fit: cover;" />
-                        }
-                        else
-                        {
-                            <span class="text-muted">Sem foto</span>
-                        }
-                    </div>
-                </div>
+
             </div>
 
             <div class="row mb-3">
@@ -56,9 +55,9 @@
                     <span asp-validation-for="DataNascimento" class="text-danger"></span>
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="UrlFoto" class="form-label">Trocar Foto</label>
-                    <input type="file" asp-for="UrlFoto" class="form-control" accept="image/*" />
-                    <span asp-validation-for="UrlFoto" class="text-danger"></span>
+                    <label for="fotoUpload" class="form-label">Trocar Foto</label>
+                    <input type="file" name="fotoUpload" class="form-control" accept="image/*" />
+                    <span for="fotoUpload" class="text-danger"></span>
                 </div>
             </div>
 

@@ -202,10 +202,10 @@ namespace Biblioteca.Controllers
 
         // GET: Usuarios/Edit/5
         [Authorize]
-        public async Task<IActionResult> Edit()
+        public async Task<IActionResult> Edit(int id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.AppUserId.ToString() == userId);
+
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.UsuarioId == id);
             if (usuario == null)
                 return NotFound();
 
@@ -217,30 +217,60 @@ namespace Biblioteca.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,NomeCompleto,CPF,Celular,DataNascimento,UrlFoto,AppUserId")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,NomeCompleto,CPF,Celular,DataNascimento,UrlFoto,AppUserId")] Usuario usuario, IFormFile? fotoUpload)
         {
             if (id != usuario.UsuarioId)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var usuarioExistente = await _context.Usuarios.AsNoTracking().FirstOrDefaultAsync(u => u.UsuarioId == id);
+                    if (usuarioExistente == null)
+                        return NotFound();
+
+                    // Se o usuário enviou uma nova foto
+                    if (fotoUpload != null && fotoUpload.Length > 0)
+                    {
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Users");
+                        var fileExtension = Path.GetExtension(fotoUpload.FileName);
+                        var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        if (!Directory.Exists(uploadsFolder))
+                            Directory.CreateDirectory(uploadsFolder);
+
+                        // Remove a foto antiga, se existir
+                        if (!string.IsNullOrEmpty(usuarioExistente.UrlFoto))
+                        {
+                            var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), usuarioExistente.UrlFoto.Replace("/", Path.DirectorySeparatorChar.ToString()));
+                            if (System.IO.File.Exists(oldImagePath))
+                                System.IO.File.Delete(oldImagePath);
+                        }
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await fotoUpload.CopyToAsync(fileStream);
+                        }
+
+                        usuario.UrlFoto = Path.Combine("Resources", "Users", uniqueFileName).Replace("\\", "/");
+                    }
+                    else
+                    {
+                        // Mantém a foto antiga se não houver upload novo
+                        usuario.UrlFoto = usuarioExistente.UrlFoto;
+                    }
+
                     _context.Update(usuario);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!UsuarioExists(usuario.UsuarioId))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
