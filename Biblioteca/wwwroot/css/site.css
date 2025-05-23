@@ -1,10 +1,12 @@
 html {
     font-size: 12px;
+    font-family: Times, 'Times New Roman', serif;
 }
 
-@media (max-width: 991.98px) { /* até Bootstrap 'lg' */
-    .d-none-user-mobile {
-        display: none !important;
+@media (min-width: 768px) {
+    html {
+        font-size: 14px;
+        font-family: Times, 'Times New Roman', serif;
     }
 }
 
@@ -15,15 +17,17 @@ html {
 html {
     position: relative;
     min-height: 100%;
+    font-family: Times, 'Times New Roman', serif;
 }
 
 body {
     margin: 0;
     padding: 0;
+    font-family: Times, 'Times New Roman', serif;
 }
 
 .parallax {
-    background-image: url('../img/biblioteca.jpeg');
+    background-image: url('../img/LivrosParalax.jpg');
     height: 550px;
     max-height: 550px;
     background-attachment: fixed;
@@ -34,6 +38,7 @@ body {
 
 header {
     box-shadow: rgba(0,0,0,.3) 0px 5px;
+    font-family: Times, 'Times New Roman', serif;
 }
 
 #divPesquisa {
@@ -44,13 +49,13 @@ header {
     text-align: center;
     width: 60%;
     font-size: 12px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Times, 'Times New Roman', serif;
 }
 
     .form-busca input {
         padding: 5px 20px;
         font-size: 14px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: Times, 'Times New Roman', serif;
     }
 
 
@@ -66,6 +71,7 @@ header {
         box-shadow: rgba(0,0,0,.4) 10px 10px;
         height: 400px;
         max-height: 400px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
         #divLancamentos .card img, #divTop5 .card img, #divAvalicao .card img {
@@ -82,7 +88,7 @@ header {
     margin: auto auto;
     width: 40%;
     font-size: 16px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Times, 'Times New Roman', serif;
     padding: 32px;
     border-radius: 16px;
     margin-top: 50px;
@@ -91,6 +97,7 @@ header {
 
     #divLogin input {
         padding: 40px 20px 20px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
         #divLogin input:last-child {
@@ -106,6 +113,7 @@ header {
     display: flex;
     align-items: center;
     gap: 8px; /* Espaço entre o checkbox e o texto */
+    font-family: Times, 'Times New Roman', serif;
 }
 
 .custom-checkbox:checked {
@@ -121,16 +129,19 @@ header {
     border-radius: 16px;
     margin-top: 50px;
     box-shadow: rgba(0,0,0,.4) 12px 12px;
+    font-family: Times, 'Times New Roman', serif;
 }
 
     #divUsuario button {
         width: 250px;
         padding: 16px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
     #divUsuario input {
         font-size: 16px;
         padding: 12px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
 
@@ -139,31 +150,37 @@ header {
     border-radius: 16px;
     margin-top: 42px;
     box-shadow: rgba(0,0,0,.4) 12px 12px;
+    font-family: Times, 'Times New Roman', serif;
 }
 
     #divLivro button {
         width: 250px;
         padding: 16px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
     #divLivro input {
         font-size: 16px;
         padding: 12px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
     #divLivro select {
         font-size: 16px;
         padding: 12px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
     #divLivro textarea {
         font-size: 16px;
         padding: 12px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
     #divLivro a {
         font-size: 16px;
         padding: 12px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
 
@@ -172,20 +189,24 @@ header {
     border-radius: 16px;
     margin-top: 42px;
     box-shadow: rgba(0,0,0,.4) 12px 12px;
+    font-family: Times, 'Times New Roman', serif;
 }
 
     #listaLivros input {
         font-size: 16px;
         padding: 12px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
     #listaLivros a {
         font-size: 16px;
         padding: 12px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
 .nav-tabs .nav-link:not(.active) {
     color: #f8f9fa !important;
+    font-family: Times, 'Times New Roman', serif;
 }
 
 #divMovimentos {
@@ -193,21 +214,25 @@ header {
     border-radius: 16px;
     margin-top: 42px;
     box-shadow: rgba(0,0,0,.4) 12px 12px;
+    font-family: Times, 'Times New Roman', serif;
 }
 
     #divMovimentos button {
         width: 250px;
         padding: 16px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
     #divMovimentos input {
         font-size: 16px;
         padding: 12px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
 .btn-admin {
     width: 150px !important;
     padding: 5px !important;
+    font-family: Times, 'Times New Roman', serif;
 }
 
 
@@ -216,14 +241,49 @@ header {
     border-radius: 16px;
     margin-top: 42px;
     box-shadow: rgba(0,0,0,.4) 12px 12px;
+    font-family: Times, 'Times New Roman', serif;
 }
 
     #divMinhasRetiradas button {
         width: 250px;
         padding: 16px;
+        font-family: Times, 'Times New Roman', serif;
     }
 
     #divMinhasRetiradas input {
         font-size: 14px;
         padding: 12px;
+        font-family: Times, 'Times New Roman', serif;
     }
+
+    /* Botões padrão */
+    button,
+    input[type="button"],
+    input[type="submit"],
+    .btn,
+    #divUsuario button,
+    #divLivro button,
+    #divMovimentos button,
+    #divMinhasRetiradas button,
+    .btn-admin {
+        background-color: #00d1d2 !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 8px;
+        transition: background 0.2s;
+        font-family: Times, 'Times New Roman', serif;
+    }
+
+        /* Efeito hover para botões */
+        button:hover,
+        input[type="button"]:hover,
+        input[type="submit"]:hover,
+        .btn:hover,
+        #divUsuario button:hover,
+        #divLivro button:hover,
+        #divMovimentos button:hover,
+        #divMinhasRetiradas button:hover,
+        .btn-admin:hover {
+            background-color: #009fa0 !important;
+            font-family: Times, 'Times New Roman', serif;
+        }
