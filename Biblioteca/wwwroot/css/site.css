@@ -2,9 +2,9 @@ html {
     font-size: 12px;
 }
 
-@media (min-width: 768px) {
-    html {
-        font-size: 14px;
+@media (max-width: 991.98px) { /* até Bootstrap 'lg' */
+    .d-none-user-mobile {
+        display: none !important;
     }
 }
 

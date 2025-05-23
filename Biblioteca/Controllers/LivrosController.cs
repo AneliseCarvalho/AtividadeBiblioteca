@@ -182,21 +182,69 @@ namespace Biblioteca.Controllers
         }
 
         // GET: Livros/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // POST: Livros/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("LivroId,Titulo,Autor,Descricao,Editora,DataPublicacao,NumeroPaginas,Quantidade,UrlCapa,ISBN10,ISBN13,GeneroId")] Livro livro, IFormFile novaCapa)
         {
-            if (id == null)
+            if (id != livro.LivroId)
             {
                 return NotFound();
             }
 
-            var livro = await _context.Livros.FindAsync(id);
-            if (livro == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                try
+                {
+                    // Se uma nova imagem foi enviada, salva e atualiza o caminho
+                    if (novaCapa != null && novaCapa.Length > 0)
+                    {
+                        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Books");
+                        var fileExtension = Path.GetExtension(novaCapa.FileName);
+                        var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        if (!Directory.Exists(uploadsFolder))
+                        {
+                            Directory.CreateDirectory(uploadsFolder);
+                        }
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await novaCapa.CopyToAsync(fileStream);
+                        }
+
+                        // Remove a imagem antiga se existir
+                        if (!string.IsNullOrEmpty(livro.UrlCapa))
+                        {
+                            var oldPath = Path.Combine(Directory.GetCurrentDirectory(), livro.UrlCapa.Replace("/", Path.DirectorySeparatorChar.ToString()));
+                            if (System.IO.File.Exists(oldPath))
+                                System.IO.File.Delete(oldPath);
+                        }
+
+                        livro.UrlCapa = Path.Combine("Resources", "Books", uniqueFileName).Replace("\\", "/");
+                    }
+
+                    _context.Update(livro);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!LivroExists(livro.LivroId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
             }
             ViewData["GeneroId"] = new SelectList(_context.Generos.OrderBy(g => g.Nome), "GeneroId", "Nome", livro.GeneroId);
             return View(livro);
         }
+
 
         // POST: Livros/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
